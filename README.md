@@ -66,10 +66,17 @@ Sort transpose and summarize with output dataset using just one proc.
 
      2. Proc report
 
-       proc report data=have out=want_rpt missing nowd;
+        proc report data=have out=want_rpt(DROP=_BREAK_ rename=(
+          /* always in alphabetic order */
+             _c2_ = BLUE
+             _c3_ = GREEN
+             _c4_ = RED ))
+             missing nowd;
          cols name type;
          define name / group;
          define type / across;
+         rbreak after /summarize;
+         compute after; name='Sum';endcomp;
        run;quit;
 
     *                _              _       _
@@ -99,6 +106,4 @@ Sort transpose and summarize with output dataset using just one proc.
     Matt Green
     ;;;;
     run;quit;
-
-
 
